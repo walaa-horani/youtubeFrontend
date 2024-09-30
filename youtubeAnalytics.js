@@ -7,18 +7,19 @@ const YouTubeAnalyticsPage = () => {
     const [error, setError] = useState(null);
     
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('https://youtubechannelanalytics.pythonanywhere.com/'); // Fetching the data
-                console.log(response.data);
-                setAnalyticsData(response.data); // Store the fetched data
-            } catch (error) {
-                setError(error.message);
-            }
-        };
-
-        fetchData();
+      const fetchData = async () => {
+        try {
+          const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/your-endpoint');
+          const data = await response.json();
+          console.log(data);  // Log the response here to inspect it
+          setAnalyticsData(data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+      fetchData();
     }, []);
+
 
     return (
         <div>
