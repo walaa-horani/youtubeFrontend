@@ -3,30 +3,32 @@ import axios from 'axios';
 import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 
 const YouTubeAnalyticsPage = () => {
-    const [analyticsData, setAnalyticsData] = useState([]);
+    const [analyticsData, setAnalyticsData] = useState([]); // Start with an empty array
     const [error, setError] = useState(null);
-    
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/your-endpoint');
-          const data = await response.json();
-          console.log(data);  // Log the response here to inspect it
-          setAnalyticsData(data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-      fetchData();
-    }, []);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/');
+                const data = await response.json();
+                console.log(data);  // Log the response here to inspect it
+                setAnalyticsData(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setError('Failed to fetch data');
+            }
+        };
+        fetchData();
+    }, []);
 
     return (
         <div>
             <Typography variant="h4" gutterBottom>
                 YouTube Analytics Data
             </Typography>
-            {error && <Typography color="error">Error: {error}</Typography>}
+            
+            {/* Display error message */}
+            {error && <Typography color="error">{error}</Typography>}
 
             <Grid container spacing={3}>
                 <Grid item xs={12}>
@@ -44,7 +46,8 @@ const YouTubeAnalyticsPage = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {analyticsData.length > 0 ? (
+                                {/* Ensure analyticsData is an array and not empty */}
+                                {Array.isArray(analyticsData) && analyticsData.length > 0 ? (
                                     analyticsData.map((row, index) => (
                                         <TableRow key={index} sx={{ borderBottom: '1px solid #90caf9' }}>
                                             <TableCell>{row.day}</TableCell>
