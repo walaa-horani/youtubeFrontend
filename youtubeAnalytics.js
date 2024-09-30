@@ -6,20 +6,33 @@ const YouTubeAnalyticsPage = () => {
     const [analyticsData, setAnalyticsData] = useState([]); // Start with an empty array
     const [error, setError] = useState(null);
 
-   useEffect(() => {
-    const fetchData = async () => {
-        try {
-            const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/');
-            const data = await response.json(); // Correctly parse JSON data
-            console.log(data);  // Log the parsed data
-            setAnalyticsData(data); // Assuming data is in the expected format
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            setError('Failed to fetch data');
-        }
-    };
-    fetchData();
-}, []);
+    // Fetch data from the API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Check if we have a code in the URL (after OAuth redirect)
+                const urlParams = new URLSearchParams(window.location.search);
+                const code = urlParams.get('code');
+
+                if (code) {
+                    // We have a code, exchange it for analytics data
+                    const response = await axios.get(`https://youtubechannelanalytics.pythonanywhere.com/oauth2callback/?code=${code}`);
+                    setAnalyticsData(response.data);
+                } else {
+                    // No code, get the authorization URL
+                    const response = await axios.get('https://youtubechannelanalytics.pythonanywhere.com/oauth2callback/');
+                    if (response.data.authorization_url) {
+                        // Redirect to Google's OAuth page
+                        window.location.href = response.data.authorization_url;
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setError(error.response?.data?.error || 'An unknown error occurred');
+            }
+        };
+        fetchData();
+    }, []);
 
     return (
         <div>
@@ -32,7 +45,7 @@ const YouTubeAnalyticsPage = () => {
 
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <TableContainer component={Paper} style={{ maxHeight: 400, color:"white" }}>
+                    <TableContainer component={Paper} style={{ maxHeight: 400, color: "white" }}>
                         <Typography style={{ padding: "5px", backgroundColor: '#2d2d2d' }} variant="h6" gutterBottom>
                             Analytics Data (Views, Estimated Minutes Watched, Average View Duration)
                         </Typography>
