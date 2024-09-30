@@ -10,11 +10,25 @@ const YouTubeAnalyticsPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://youtubechannelanalytics.pythonanywhere.com/');
-                setAnalyticsData(response.data); // Assuming response.data is in the expected format
+                // Check if we have a code in the URL (after OAuth redirect)
+                const urlParams = new URLSearchParams(window.location.search);
+                const code = urlParams.get('code');
+
+                if (code) {
+                    // We have a code, exchange it for analytics data
+                    const response = await axios.get(`https://youtubechannelanalytics.pythonanywhere.com/oauth2callback/?code=${code}`);
+                    setAnalyticsData(response.data);
+                } else {
+                    // No code, get the authorization URL
+                    const response = await axios.get('https://youtubechannelanalytics.pythonanywhere.com/oauth2callback/');
+                    if (response.data.authorization_url) {
+                        // Redirect to Google's OAuth page
+                        window.location.href = response.data.authorization_url;
+                    }
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
-                setError('Failed to fetch data');
+                setError(error.response?.data?.error || 'An unknown error occurred');
             }
         };
         fetchData();
