@@ -6,20 +6,20 @@ const YouTubeAnalyticsPage = () => {
     const [analyticsData, setAnalyticsData] = useState([]); // Start with an empty array
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/');
-                const data = await response.json();
-                console.log(data);  // Log the response here to inspect it
-                setAnalyticsData(data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setError('Failed to fetch data');
-            }
-        };
-        fetchData();
-    }, []);
+   useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/');
+            const data = await response.json(); // Correctly parse JSON data
+            console.log(data);  // Log the parsed data
+            setAnalyticsData(data); // Assuming data is in the expected format
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setError('Failed to fetch data');
+        }
+    };
+    fetchData();
+}, []);
 
     return (
         <div>
