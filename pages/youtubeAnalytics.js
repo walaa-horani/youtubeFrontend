@@ -5,32 +5,20 @@ import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, Ta
 const YouTubeAnalyticsPage = () => {
     const [analyticsData, setAnalyticsData] = useState([]); // Start with an empty array
     const [error, setError] = useState(null);
-<<<<<<< HEAD
-=======
-    
+
+    // Fetch data from the API
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('https://youtubechannelanalytics.pythonanywhere.com/');
-                setViewerData(response.data.viewer_data);
-                setCountryData(response.data.country_data);
-                setDeviceTypeData(response.data.device_type_data); 
->>>>>>> 4d3916724e983a8fb6613e7b38af32dac0102e05
-
-   useEffect(() => {
-    const fetchData = async () => {
-        try {
-            const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/');
-            const data = await response.json(); // Correctly parse JSON data
-            console.log(data);  // Log the parsed data
-            setAnalyticsData(data); // Assuming data is in the expected format
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            setError('Failed to fetch data');
-        }
-    };
-    fetchData();
-}, []);
+                setAnalyticsData(response.data); // Assuming response.data is in the expected format
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setError('Failed to fetch data');
+            }
+        };
+        fetchData();
+    }, []);
 
     return (
         <div>
@@ -43,7 +31,7 @@ const YouTubeAnalyticsPage = () => {
 
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <TableContainer component={Paper} style={{ maxHeight: 400, color:"white" }}>
+                    <TableContainer component={Paper} style={{ maxHeight: 400, color: "white" }}>
                         <Typography style={{ padding: "5px", backgroundColor: '#2d2d2d' }} variant="h6" gutterBottom>
                             Analytics Data (Views, Estimated Minutes Watched, Average View Duration)
                         </Typography>
