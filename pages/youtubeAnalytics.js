@@ -14,7 +14,7 @@ const YouTubeAnalyticsPage = () => {
                 setAnalyticsData(response.data); // Assuming response.data is in the expected format
             } catch (error) {
                 console.error('Error fetching data:', error);
-                setError('Failed to fetch data');
+                setError(error.response?.data?.error || 'An unknown error occurred');
             }
         };
         fetchData();
