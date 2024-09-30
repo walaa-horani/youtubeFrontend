@@ -13,6 +13,7 @@ const YouTubeAnalyticsPage = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('https://youtubechannelanalytics.pythonanywhere.com/');
+                 console.log(response.data);
                 setViewerData(response.data.viewer_data);
                 setCountryData(response.data.country_data);
                 setDeviceTypeData(response.data.device_type_data); 
