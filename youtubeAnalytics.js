@@ -5,17 +5,6 @@ import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, Ta
 const YouTubeAnalyticsPage = () => {
     const [analyticsData, setAnalyticsData] = useState([]); // Start with an empty array
     const [error, setError] = useState(null);
-<<<<<<< HEAD
-=======
-    
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('https://youtubechannelanalytics.pythonanywhere.com/');
-                setViewerData(response.data.viewer_data);
-                setCountryData(response.data.country_data);
-                setDeviceTypeData(response.data.device_type_data); 
->>>>>>> 4d3916724e983a8fb6613e7b38af32dac0102e05
 
    useEffect(() => {
     const fetchData = async () => {
