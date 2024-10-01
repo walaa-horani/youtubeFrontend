@@ -8,7 +8,7 @@ const YoutubeAnalyticsTable = () => {
     useEffect(() => {
         const fetchAnalytics = async () => {
             try {
-                const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/analytics/');
+                const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/');
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
