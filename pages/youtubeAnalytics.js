@@ -9,20 +9,25 @@ const YoutubeAnalyticsTable = () => {
     const fetchAnalytics = async () => {
         try {
             const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/');
+            console.log("Response Status:", response.status); // Log the response status
+            console.log("Response Headers:", response.headers); // Log response headers
+
             if (!response.ok) {
                 throw new Error('Failed to fetch data');
             }
-            const data = await response.json();
 
-            // Log the fetched data for debugging
-            console.log("Fetched analytics data:", data);
+            const data = await response.json();
+            console.log("Fetched analytics data:", data); // Log the fetched data
 
             setAnalyticsData(data); // Set the state with fetched data
         } catch (error) {
             setError(error.message);
-            console.error("Error fetching analytics data:", error);
+            console.error("Error fetching analytics data:", error); // Log error for debugging
         }
     };
+
+    fetchAnalytics();
+}, []);
 
     fetchAnalytics();
 }, []);
