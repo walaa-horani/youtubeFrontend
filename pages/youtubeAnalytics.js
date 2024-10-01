@@ -8,15 +8,15 @@ const YoutubeAnalyticsTable = () => {
     useEffect(() => {
         const fetchAnalytics = async () => {
             try {
-                const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/');
+                const response = await fetch('/fetch-analytics-data/'); // Use relative URL for deployment
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
                 const data = await response.json();
-                // Assuming the response data is in the format you need
-                setAnalyticsData(data.rows || []); // Adjust this according to the actual response structure
+                setAnalyticsData(data); // Adjusted to match the response structure
             } catch (error) {
                 setError(error.message);
+                console.error("Error fetching analytics data:", error); // Log error for debugging
             }
         };
 
