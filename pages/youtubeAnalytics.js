@@ -68,6 +68,8 @@ const YoutubeAnalyticsTable = () => {
                     <TableCell>{row.views}</TableCell>
                     <TableCell>{row.estimated_minutes_watched}</TableCell> {/* Corrected to match JSON keys */}
                     <TableCell>{row.average_view_duration}</TableCell> {/* Corrected to match JSON keys */}
+                     <TableCell>{row.averageViewPercentage}</TableCell> {/* Corrected to match JSON keys */}
+                     <TableCell>{row.subscribersGained}</TableCell> {/* Corrected to match JSON keys */}
                 </TableRow>
             ))
         ) : (
