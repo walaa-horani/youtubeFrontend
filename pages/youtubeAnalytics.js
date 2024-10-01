@@ -53,7 +53,9 @@ const YoutubeAnalyticsTable = () => {
                                 <TableCell>Views</TableCell>
                                 <TableCell>Estimated Minutes Watched</TableCell>
                                 <TableCell>Average View Duration</TableCell>
-                            </TableRow>
+                                  <TableCell>averageViewPercentage</TableCell>
+                                  <TableCell>subscribers Gained</TableCell>
+                                                        </TableRow>
                         </TableHead>
                        <TableBody>
     {error ? (
