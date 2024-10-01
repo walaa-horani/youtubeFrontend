@@ -5,10 +5,18 @@ const YoutubeAnalyticsTable = () => {
     const [analyticsData, setAnalyticsData] = useState([]);
     const [error, setError] = useState(null);
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchAnalytics = async () => {
         try {
-            const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/');
+            const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/', {
+                method: 'GET',
+                credentials: 'include',  // Ensure cookies are included
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add any other necessary headers here
+                },
+            });
+
             console.log("Response Status:", response.status); // Log the response status
             console.log("Response Headers:", response.headers); // Log response headers
 
@@ -28,6 +36,7 @@ const YoutubeAnalyticsTable = () => {
 
     fetchAnalytics();
 }, []);
+
 
 
     return (
