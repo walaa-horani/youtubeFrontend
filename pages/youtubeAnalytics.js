@@ -5,23 +5,27 @@ const YoutubeAnalyticsTable = () => {
     const [analyticsData, setAnalyticsData] = useState([]);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchAnalytics = async () => {
-            try {
-                const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/'); // Use relative URL for deployment
-                if (!response.ok) {
-                    throw new Error('Failed to fetch data');
-                }
-                const data = await response.json();
-                setAnalyticsData(data); // Adjusted to match the response structure
-            } catch (error) {
-                setError(error.message);
-                console.error("Error fetching analytics data:", error); // Log error for debugging
+   useEffect(() => {
+    const fetchAnalytics = async () => {
+        try {
+            const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/');
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
             }
-        };
+            const data = await response.json();
 
-        fetchAnalytics();
-    }, []);
+            // Log the fetched data for debugging
+            console.log("Fetched analytics data:", data);
+
+            setAnalyticsData(data); // Set the state with fetched data
+        } catch (error) {
+            setError(error.message);
+            console.error("Error fetching analytics data:", error);
+        }
+    };
+
+    fetchAnalytics();
+}, []);
 
     return (
         <Grid container spacing={3}>
@@ -39,28 +43,28 @@ const YoutubeAnalyticsTable = () => {
                                 <TableCell>Average View Duration</TableCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody>
-                            {error ? (
-                                <TableRow>
-                                    <TableCell colSpan={4}>Error: {error}</TableCell>
-                                </TableRow>
-                            ) : (
-                                Array.isArray(analyticsData) && analyticsData.length > 0 ? (
-                                    analyticsData.map((row, index) => (
-                                        <TableRow key={index} sx={{ borderBottom: '1px solid #90caf9' }}>
-                                            <TableCell>{row.day}</TableCell>
-                                            <TableCell>{row.views}</TableCell>
-                                            <TableCell>{row.estimatedMinutesWatched}</TableCell>
-                                            <TableCell>{row.averageViewDuration}</TableCell>
-                                        </TableRow>
-                                    ))
-                                ) : (
-                                    <TableRow>
-                                        <TableCell colSpan={4}>No data available</TableCell>
-                                    </TableRow>
-                                )
-                            )}
-                        </TableBody>
+                       <TableBody>
+    {error ? (
+        <TableRow>
+            <TableCell colSpan={4}>Error: {error}</TableCell>
+        </TableRow>
+    ) : (
+        Array.isArray(analyticsData) && analyticsData.length > 0 ? (
+            analyticsData.map((row, index) => (
+                <TableRow key={index} sx={{ borderBottom: '1px solid #90caf9' }}>
+                    <TableCell>{row.day}</TableCell>
+                    <TableCell>{row.views}</TableCell>
+                    <TableCell>{row.estimated_minutes_watched}</TableCell> {/* Corrected to match JSON keys */}
+                    <TableCell>{row.average_view_duration}</TableCell> {/* Corrected to match JSON keys */}
+                </TableRow>
+            ))
+        ) : (
+            <TableRow>
+                <TableCell colSpan={4}>No data available</TableCell>
+            </TableRow>
+        )
+    )}
+</TableBody>
                     </Table>
                 </TableContainer>
             </Grid>
