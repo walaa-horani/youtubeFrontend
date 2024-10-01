@@ -29,8 +29,6 @@ const YoutubeAnalyticsTable = () => {
     fetchAnalytics();
 }, []);
 
-    fetchAnalytics();
-}, []);
 
     return (
         <Grid container spacing={3}>
