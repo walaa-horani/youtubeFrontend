@@ -24,11 +24,13 @@ const YoutubeAnalyticsTable = () => {
     const [isDownloading, setIsDownloading] = useState(false);
     const [startDate, setStartDate] = useState(dayjs().subtract(1, 'year'));
     const [endDate, setEndDate] = useState(dayjs());
+    const [selectedStartDate, setSelectedStartDate] = useState(dayjs().subtract(1, 'year'));
+    const [selectedEndDate, setSelectedEndDate] = useState(dayjs());
 
     const fetchAnalytics = async () => {
         try {
             const response = await fetch(
-                `https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/?start_date=${startDate.format('YYYY-MM-DD')}&end_date=${endDate.format('YYYY-MM-DD')}`,
+                `https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/?start_date=${selectedStartDate.format('YYYY-MM-DD')}&end_date=${selectedEndDate.format('YYYY-MM-DD')}`,
                 {
                     method: 'GET',
                     credentials: 'include',
@@ -50,10 +52,11 @@ const YoutubeAnalyticsTable = () => {
         }
     };
 
-    // Fetch data on initial load and whenever startDate or endDate changes
-    useEffect(() => {
+    const handleFilterClick = () => {
+        setSelectedStartDate(startDate);
+        setSelectedEndDate(endDate);
         fetchAnalytics();
-    }, [startDate, endDate]);
+    };
 
     const handleDownloadCSV = async () => {
         try {
@@ -106,6 +109,9 @@ const YoutubeAnalyticsTable = () => {
                                 onChange={(newValue) => setEndDate(newValue)}
                                 maxDate={dayjs()}
                             />
+                            <Button variant="contained" onClick={handleFilterClick}>
+                                Filter
+                            </Button>
                         </Stack>
                         <Button
                             variant="contained"
