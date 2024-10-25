@@ -136,7 +136,7 @@ const YoutubeAnalyticsTable = () => {
                         <Table stickyHeader>
                             <TableHead>
                                 <TableRow style={{ backgroundColor: '#90caf9' }}>
-                                    <TableCell>Date</TableCell>
+                                    <TableCell>Country</TableCell>
                                     <TableCell>Views</TableCell>
                                     <TableCell>Estimated Minutes Watched</TableCell>
                                     <TableCell>Average View Duration</TableCell>
