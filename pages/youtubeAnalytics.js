@@ -61,27 +61,32 @@ const YoutubeAnalyticsTable = () => {
     const handleDownloadCSV = async () => {
         try {
             setIsDownloading(true);
-            const response = await fetch(
-                'https://youtubechannelanalytics.pythonanywhere.com/download-analytics-csv/',
-                {
-                    method: 'GET',
-                    credentials: 'include',
-                }
-            );
-
+            
+            // Format the dates as strings in 'YYYY-MM-DD' format
+            const startDate = selectedStartDate.format('YYYY-MM-DD');
+            const endDate = selectedEndDate.format('YYYY-MM-DD');
+    
+            // Append the dates as query parameters to the download URL
+            const url = `https://youtubechannelanalytics.pythonanywhere.com/download-analytics-csv/?start_date=${startDate}&end_date=${endDate}`;
+    
+            const response = await fetch(url, {
+                method: 'GET',
+                credentials: 'include',
+            });
+    
             if (!response.ok) {
                 throw new Error('Failed to download CSV');
             }
-
+    
             const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
+            const downloadUrl = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.style.display = 'none';
-            a.href = url;
+            a.href = downloadUrl;
             a.download = `youtube_analytics_${dayjs().format('YYYY-MM-DD')}.csv`;
             document.body.appendChild(a);
             a.click();
-            window.URL.revokeObjectURL(url);
+            window.URL.revokeObjectURL(downloadUrl);
             document.body.removeChild(a);
         } catch (error) {
             console.error("Error downloading CSV:", error);
@@ -90,6 +95,7 @@ const YoutubeAnalyticsTable = () => {
             setIsDownloading(false);
         }
     };
+
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
