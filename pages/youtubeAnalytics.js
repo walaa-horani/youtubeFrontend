@@ -42,16 +42,13 @@ const YoutubeAnalyticsTable = () => {
         fetchAnalytics();
     }, []);
 
-    const handleDownload = async (format) => {
+    const handleDownloadCSV = async () => {
         try {
             setIsDownloading(true);
-            const response = await fetch(
-                `https://youtubechannelanalytics.pythonanywhere.com/download-analytics/?format=${format}`,
-                {
-                    method: 'GET',
-                    credentials: 'include',
-                }
-            );
+            const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/download-analytics-csv/', {
+                method: 'GET',
+                credentials: 'include',
+            });
             if (!response.ok) {
                 throw new Error('Download failed');
             }
@@ -61,14 +58,14 @@ const YoutubeAnalyticsTable = () => {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `youtube_analytics.${format}`;
+            a.download = 'youtube_analytics.csv';
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
         } catch (error) {
-            console.error("Error downloading file:", error);
-            setError("Failed to download file");
+            console.error("Error downloading CSV file:", error);
+            setError("Failed to download CSV file");
         } finally {
             setIsDownloading(false);
         }
@@ -86,18 +83,10 @@ const YoutubeAnalyticsTable = () => {
                     <Button
                         variant="contained"
                         startIcon={<Download />}
-                        onClick={() => handleDownload('csv')}
+                        onClick={handleDownloadCSV}
                         disabled={isDownloading}
                     >
                         Download CSV
-                    </Button>
-                    <Button
-                        variant="contained"
-                        startIcon={<Download />}
-                        onClick={() => handleDownload('excel')}
-                        disabled={isDownloading}
-                    >
-                        Download Excel
                     </Button>
                 </Stack>
                 
