@@ -28,29 +28,29 @@ const YoutubeAnalyticsTable = () => {
     const [selectedEndDate, setSelectedEndDate] = useState(dayjs());
 
     const fetchAnalytics = async () => {
-        try {
-            const response = await fetch(
-                `https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/?start_date=${selectedStartDate.format('YYYY-MM-DD')}&end_date=${selectedEndDate.format('YYYY-MM-DD')}`,
-                {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
+    try {
+        const url = `https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/?start_date=${selectedStartDate.format('YYYY-MM-DD')}&end_date=${selectedEndDate.format('YYYY-MM-DD')}&_=${new Date().getTime()}`;
+        console.log(`Fetching from URL: ${url}`);
+        const response = await fetch(url, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch data');
-            }
-
-            const data = await response.json();
-            setAnalyticsData(data);
-        } catch (error) {
-            setError(error.message);
-            console.error("Error fetching analytics data:", error);
+        if (!response.ok) {
+            throw new Error('Failed to fetch data');
         }
-    };
+
+        const data = await response.json();
+        setAnalyticsData(data);
+    } catch (error) {
+        setError(error.message);
+        console.error("Error fetching analytics data:", error);
+    }
+};
+
 
     const handleFilterClick = () => {
         setSelectedStartDate(startDate);
