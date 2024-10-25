@@ -22,7 +22,7 @@ const YoutubeAnalyticsTable = () => {
     useEffect(() => {
         const fetchAnalytics = async () => {
             try {
-                const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/youtubeAnalytics/download-analytics-csv', {
+                const response = await fetch('https://youtubechannelanalytics.pythonanywhere.com/api/youtube-analytics/', {
                     method: 'GET',
                     credentials: 'include',
                     headers: {
