@@ -25,32 +25,33 @@ const YoutubeAnalyticsTable = () => {
     const [startDate, setStartDate] = useState(dayjs().subtract(1, 'year'));
     const [endDate, setEndDate] = useState(dayjs());
 
-    useEffect(() => {
-        const fetchAnalytics = async () => {
-            try {
-                const response = await fetch(
-                    `https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/?start_date=${startDate.format('YYYY-MM-DD')}&end_date=${endDate.format('YYYY-MM-DD')}`,
-                    {
-                        method: 'GET',
-                        credentials: 'include',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch data');
+    const fetchAnalytics = async () => {
+        try {
+            const response = await fetch(
+                `https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/?start_date=${startDate.format('YYYY-MM-DD')}&end_date=${endDate.format('YYYY-MM-DD')}`,
+                {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 }
+            );
 
-                const data = await response.json();
-                setAnalyticsData(data);
-            } catch (error) {
-                setError(error.message);
-                console.error("Error fetching analytics data:", error);
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
             }
-        };
 
+            const data = await response.json();
+            setAnalyticsData(data);
+        } catch (error) {
+            setError(error.message);
+            console.error("Error fetching analytics data:", error);
+        }
+    };
+
+    // Fetch data on initial load and whenever startDate or endDate changes
+    useEffect(() => {
         fetchAnalytics();
     }, [startDate, endDate]);
 
@@ -69,21 +70,14 @@ const YoutubeAnalyticsTable = () => {
                 throw new Error('Failed to download CSV');
             }
 
-            // Create blob from response
             const blob = await response.blob();
-            
-            // Create download link
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
             a.download = `youtube_analytics_${dayjs().format('YYYY-MM-DD')}.csv`;
-            
-            // Trigger download
             document.body.appendChild(a);
             a.click();
-            
-            // Cleanup
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
         } catch (error) {
@@ -157,7 +151,7 @@ const YoutubeAnalyticsTable = () => {
                                         ))
                                     ) : (
                                         <TableRow>
-                                            <TableCell colSpan={6} style={{ textAlign: 'center' }}>No data available</TableCell>
+                                            <TableCell colSpan={6}>No data available</TableCell>
                                         </TableRow>
                                     )
                                 )}
