@@ -113,4 +113,27 @@ const YoutubeAnalyticsTable = () => {
                             ) : (
                                 Array.isArray(analyticsData) && analyticsData.length > 0 ? (
                                     analyticsData.map((row, index) => (
-                        
+                                        <TableRow key={index} sx={{ borderBottom: '1px solid #90caf9' }}>
+                                            <TableCell>{row.day}</TableCell>
+                                            <TableCell>{row.views}</TableCell>
+                                            <TableCell>{row.estimated_minutes_watched}</TableCell>
+                                            <TableCell>{row.average_view_duration}</TableCell>
+                                            <TableCell>{row.averageViewPercentage}</TableCell>
+                                            <TableCell>{row.subscribersGained}</TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={6}>No data available</TableCell>
+                                    </TableRow>
+                                )
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Grid>
+        </Grid>
+    );
+};
+
+export default YoutubeAnalyticsTable;
