@@ -3,20 +3,20 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Download } from 'lucide-react';
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
 
 const YoutubeAnalyticsTable = () => {
   const [analyticsData, setAnalyticsData] = useState([]);
   const [error, setError] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [startDate, setStartDate] = useState(new Date(Date.now() - 365 * 24 * 60 * 60 * 1000));
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(dayjs().subtract(1, 'year'));
+  const [endDate, setEndDate] = useState(dayjs());
 
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
         const response = await fetch(
-          `https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/?start_date=${format(startDate, 'yyyy-MM-dd')}&end_date=${format(endDate, 'yyyy-MM-dd')}`,
+          `https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/?start_date=${startDate.format('YYYY-MM-DD')}&end_date=${endDate.format('YYYY-MM-DD')}`,
           {
             method: 'GET',
             credentials: 'include',
@@ -64,7 +64,7 @@ const YoutubeAnalyticsTable = () => {
       const a = document.createElement('a');
       a.style.display = 'none';
       a.href = url;
-      a.download = `youtube_analytics_${format(new Date(), 'yyyy-MM-dd')}.csv`;
+      a.download = `youtube_analytics_${dayjs().format('YYYY-MM-DD')}.csv`;
       
       // Trigger download
       document.body.appendChild(a);
