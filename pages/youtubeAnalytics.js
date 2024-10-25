@@ -10,8 +10,7 @@ import {
     Paper,
     Typography,
     Button,
-    Stack,
-    TextField
+    Stack
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Download } from 'lucide-react';
@@ -29,16 +28,21 @@ const YoutubeAnalyticsTable = () => {
     useEffect(() => {
         const fetchAnalytics = async () => {
             try {
-                const response = await fetch(`https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/?start_date=${startDate.format('YYYY-MM-DD')}&end_date=${endDate.format('YYYY-MM-DD')}`, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
+                const response = await fetch(
+                    `https://youtubechannelanalytics.pythonanywhere.com/fetch-analytics-data/?start_date=${startDate.format('YYYY-MM-DD')}&end_date=${endDate.format('YYYY-MM-DD')}`,
+                    {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
+
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
+
                 const data = await response.json();
                 setAnalyticsData(data);
             } catch (error) {
@@ -46,6 +50,7 @@ const YoutubeAnalyticsTable = () => {
                 console.error("Error fetching analytics data:", error);
             }
         };
+
         fetchAnalytics();
     }, [startDate, endDate]); // refetch when date range changes
 
@@ -56,12 +61,7 @@ const YoutubeAnalyticsTable = () => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <Stack
-                    direction="row"
-                    spacing={2}
-                    sx={{ mb: 2 }}
-                    justifyContent="space-between"
-                >
+                <Stack direction="row" spacing={2} sx={{ mb: 2 }} justifyContent="space-between">
                     <Stack direction="row" spacing={2}>
                         <DatePicker
                             label="Start Date"
@@ -86,12 +86,8 @@ const YoutubeAnalyticsTable = () => {
                     </Button>
                 </Stack>
 
-                <TableContainer component={Paper} style={{ maxHeight: 400, color: "white" }}>
-                    <Typography
-                        style={{ padding: "5px", backgroundColor: '#2d2d2d' }}
-                        variant="h6"
-                        gutterBottom
-                    >
+                <TableContainer component={Paper} style={{ maxHeight: 400 }}>
+                    <Typography style={{ padding: "5px", backgroundColor: '#2d2d2d', color: 'white' }} variant="h6" gutterBottom>
                         Analytics Data
                     </Typography>
                     <Table stickyHeader>
