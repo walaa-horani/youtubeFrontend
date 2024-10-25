@@ -1,12 +1,15 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Link from 'next/link';
+// index.js
+import React from 'react';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import YoutubeAnalyticsTable from './youtubeAnalytics';
 
+const Home = () => {
+    return (
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <YoutubeAnalyticsTable />
+        </LocalizationProvider>
+    );
+};
 
-export default function Home() {
-  return (
-    <div>
-      <h1>Welcome to the Home Page</h1>
-      <Link href="/youtubeAnalytics">Go to YouTube Analytics Page</Link>
-    </div>
-  );
-}
+export default Home;
